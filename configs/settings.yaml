@@ -1,0 +1,50 @@
+# Central configuration for Big Data Sentiment Analysis Pipeline
+
+project:
+  name: "Sentiment Analysis of Online Product Reviews"
+  version: "0.1.0"
+  description: "Big Data Course Project - Tiki & Lazada Sentiment Pipeline"
+
+storage:
+  seeds_path: "data/seeds/products.jsonl"
+  bronze_path: "data/bronze"
+  silver_path: "data/silver"
+  gold_path: "data/gold"
+  models_path: "models"
+
+crawler:
+  tiki:
+    base_listing_api: "https://tiki.vn/api/personalish/v1/blocks/listings"
+    base_review_api: "https://tiki.vn/api/v2/reviews"
+    rate_limit_delay: 0.4
+    timeout: 15
+  lazada:
+    base_url: "https://www.lazada.vn"
+    rate_limit_delay: 1.0
+    timeout: 15
+
+spark:
+  app_name: "SentimentAnalysis_SparkETL"
+  master: "local[*]"
+  driver_memory: "4g"
+  executor_memory: "4g"
+
+silver:
+  default_lazada_seller: null
+
+mongodb:
+  uri: "mongodb://localhost:27017"
+  database: "ecommerce_sentiment"
+  collections:
+    reviews_gold: "gold_reviews"
+    trends_product: "trends_by_product"
+    trends_time: "trends_by_time"
+    trends_customer: "trends_by_customer"
+    trends_price_tier: "trends_by_price_tier"
+    trends_category: "trends_by_category"
+
+model:
+  classes: ["negative", "neutral", "positive"]
+  feature_extractor: "tfidf"  # "tfidf" or "word2vec"
+  algorithm: "logistic_regression"  # "logistic_regression", "naive_bayes", "svm"
+  metrics: ["f1_macro", "accuracy", "recall_per_class"]

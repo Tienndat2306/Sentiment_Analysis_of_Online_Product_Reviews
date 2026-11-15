@@ -1,0 +1,51 @@
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #fdf8f9;
+  color: #1e293b;
+}
+
+.soft-card {
+  background: #ffffff;
+  border: 1px solid #f3e8ea;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -2px rgba(244, 63, 94, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.soft-card:hover {
+  border-color: #fecdd3;
+  box-shadow: 0 10px 25px -4px rgba(244, 63, 94, 0.08);
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-btn {
+  transition: all 0.2s ease;
+}
+
+.sidebar-btn.active {
+  background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25);
+}
+
+.sidebar-btn:not(.active):hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

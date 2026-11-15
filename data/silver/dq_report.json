@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-11-14T13:31:47.363314+00:00",
+  "summary": {
+    "total_silver_records": 225659,
+    "has_content_records": 85320,
+    "text_usable_for_nlp": 69113,
+    "text_usable_pct": 30.63,
+    "in_seed_records": 225659,
+    "not_in_seed_records": 0,
+    "photo_reviews_count": 29512,
+    "created_at_null_count": 0,
+    "created_at_null_pct": 0.0,
+    "source_distribution": {
+      "tiki": 221514,
+      "lazada": 4145
+    }
+  },
+  "by_source": {
+    "tiki": {
+      "total_records": 221514,
+      "has_content_records": 81183,
+      "has_content_pct": 36.65,
+      "text_usable_for_nlp": 65285,
+      "text_usable_pct": 29.47,
+      "photo_reviews_count": 29166,
+      "template_title_count": 216813,
+      "avg_thank_count": 0.134,
+      "null_counts": {
+        "customer_id": 274,
+        "seller_name": 347,
+        "title": 2,
+        "thank_count": 0,
+        "comment_count": 0
+      },
+      "rating_distribution": {
+        "1": 3743,
+        "2": 1566,
+        "3": 3815,
+        "4": 21895,
+        "5": 190495
+      },
+      "text_usable_by_label": {
+        "positive": 57027,
+        "negative": 5187,
+        "neutral": 3071
+      }
+    },
+    "lazada": {
+      "total_records": 4145,
+      "has_content_records": 4137,
+      "has_content_pct": 99.81,
+      "text_usable_for_nlp": 3828,
+      "text_usable_pct": 92.35,
+      "photo_reviews_count": 346,
+      "template_title_count": 0,
+      "avg_thank_count": null,
+      "null_counts": {
+        "customer_id": 4145,
+        "seller_name": 4145,
+        "title": 4145,
+        "thank_count": 4145,
+        "comment_count": 4145
+      },
+      "rating_distribution": {
+        "3": 22,
+        "4": 45,
+        "5": 4078
+      },
+      "text_usable_by_label": {
+        "positive": 3806,
+        "neutral": 22
+      }
+    }
+  },
+  "filtering_flags": {
+    "empty_content": 140339,
+    "too_short": 16207,
+    "invalid_rating": 0
+  },
+  "source_distribution": {
+    "tiki": 221514,
+    "lazada": 4145
+  },
+  "label_distribution_weak": {
+    "positive": 216513,
+    "negative": 5309,
+    "neutral": 3837
+  },
+  "rating_distribution": {
+    "1": 3743,
+    "2": 1566,
+    "3": 3837,
+    "4": 21940,
+    "5": 194573
+  },
+  "quality_assertions": {
+    "created_at_valid": true,
+    "has_data": true,
+    "rating_within_1_to_5": true
+  }
+}

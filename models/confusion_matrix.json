@@ -1,0 +1,45 @@
+{
+  "model_name": "LinearSVC (Balanced, Calibrated)",
+  "labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "confusion_matrix": [
+    [
+      1127,
+      139,
+      186
+    ],
+    [
+      229,
+      534,
+      296
+    ],
+    [
+      60,
+      58,
+      9989
+    ]
+  ],
+  "per_class_metrics": {
+    "negative": {
+      "precision": 0.7959,
+      "recall": 0.7762,
+      "f1_score": 0.7859,
+      "support": 1452
+    },
+    "neutral": {
+      "precision": 0.7305,
+      "recall": 0.5042,
+      "f1_score": 0.5966,
+      "support": 1059
+    },
+    "positive": {
+      "precision": 0.954,
+      "recall": 0.9883,
+      "f1_score": 0.9708,
+      "support": 10107
+    }
+  }
+}

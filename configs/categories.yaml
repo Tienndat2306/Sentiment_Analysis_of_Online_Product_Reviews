@@ -1,0 +1,71 @@
+# Cấu hình danh mục cho giai đoạn thu thập danh sách URL sản phẩm (Product Discovery)
+# Phục vụ đề tài: Phân tích cảm xúc đánh giá sản phẩm trực tuyến (Tiki & Lazada)
+
+settings:
+  min_reviews: 10          # Chấp nhận mọi sản phẩm có từ 10 lượt đánh giá trở lên (không phân biệt rating cao/thấp)
+  min_sold: 3              # Có ít nhất 10 lượt mua (> 0)
+  max_pages_per_category: 3  # Quét sâu hơn (3 trang) để lấy được cả các sản phẩm có rating thấp (1-3 sao)
+  delay_seconds: 0.4      # Độ trễ giữa các request
+  output_file: "data/seeds/products.jsonl"
+
+categories:
+  - id: "1789"
+    name: "Điện Thoại - Máy Tính Bảng"
+    source: "tiki"
+    url: "https://tiki.vn/dien-thoai-may-tinh-bang/c1789"
+    enabled: false
+
+  - id: "1882"
+    name: "Điện Gia Dụng"
+    source: "tiki"
+    url: "https://tiki.vn/dien-gia-dung/c1882"
+    enabled: false
+
+  - id: "2549"
+    name: "Đồ Chơi - Mẹ & Bé"
+    source: "tiki"
+    url: "https://tiki.vn/do-choi-me-be/c2549"
+    enabled: false
+
+  - id: "1520"
+    name: "Làm Đẹp - Sức Khỏe"
+    source: "tiki"
+    url: "https://tiki.vn/lam-dep-suc-khoe/c1520"
+    enabled: false
+
+  - id: "1883"
+    name: "Nhà Cửa - Đời Sống"
+    source: "tiki"
+    url: "https://tiki.vn/nha-cua-doi-song/c1883"
+    enabled: false
+
+  - id: "8322"
+    name: "Nhà Sách Tiki"
+    source: "tiki"
+    url: "https://tiki.vn/nha-sach-tiki/c8322"
+    enabled: false
+
+  - id: "4384"
+    name: "Bách Hóa Online"
+    source: "tiki"
+    url: "https://tiki.vn/bach-hoa-online/c4384"
+    enabled: false
+
+  # Danh mục Lazada
+  - id: "do-gia-dung"
+    name: "Đồ Gia Dụng"
+    source: "lazada"
+    url: "https://www.lazada.vn/do-gia-dung/"
+    enabled: false
+
+  - id: "bach-hoa-online"
+    name: "Bách Hóa Online"
+    source: "lazada"
+    url: "https://www.lazada.vn/bach-hoa-online/"
+    enabled: false
+
+  - id: "shop-school-&-office"
+    name: "Dụng Cụ Học Tập & Văn Phòng Phẩm"
+    source: "lazada"
+    url: "https://www.lazada.vn/shop-school-&-office/"
+    enabled: false

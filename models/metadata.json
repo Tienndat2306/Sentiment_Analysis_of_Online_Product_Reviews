@@ -1,0 +1,275 @@
+{
+  "project": "Sentiment Analysis of Online Product Reviews",
+  "version": "0.1.0",
+  "active_model": "sentiment_pipeline_20261114_133744",
+  "models": [
+    {
+      "model_id": "sentiment_pipeline_20261027_103308",
+      "model_name": "LogisticRegression (Balanced)",
+      "algorithm": "LogisticRegression",
+      "created_at": "2026-10-27T10:33:08.402045+00:00",
+      "training_samples": 55290,
+      "test_samples": 13823,
+      "feature_extractor": "TfidfVectorizer",
+      "max_features": 15000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "class_distribution": {
+        "positive": 60833,
+        "negative": 5187,
+        "neutral": 3093
+      },
+      "metrics": {
+        "accuracy": 0.8564,
+        "f1_macro": 0.6041,
+        "f1_weighted": 0.879,
+        "per_class": {
+          "negative": {
+            "precision": 0.5216,
+            "recall": 0.6982,
+            "f1_score": 0.5971,
+            "support": 1037
+          },
+          "neutral": {
+            "precision": 0.2031,
+            "recall": 0.4588,
+            "f1_score": 0.2816,
+            "support": 619
+          },
+          "positive": {
+            "precision": 0.9812,
+            "recall": 0.8901,
+            "f1_score": 0.9335,
+            "support": 12167
+          }
+        }
+      },
+      "all_candidate_metrics": {
+        "MultinomialNB (Baseline)": {
+          "accuracy": 0.9073,
+          "f1_macro": 0.5365,
+          "f1_weighted": 0.8887
+        },
+        "ComplementNB (Imbalanced-optimized)": {
+          "accuracy": 0.8393,
+          "f1_macro": 0.5377,
+          "f1_weighted": 0.8583
+        },
+        "LogisticRegression (Balanced)": {
+          "accuracy": 0.8564,
+          "f1_macro": 0.6041,
+          "f1_weighted": 0.879
+        },
+        "LinearSVC (Balanced, Calibrated)": {
+          "accuracy": 0.913,
+          "f1_macro": 0.545,
+          "f1_weighted": 0.8927
+        }
+      },
+      "artifact_path": "models/best_sentiment_model.joblib"
+    },
+    {
+      "model_id": "sentiment_pipeline_20261027_154802",
+      "model_name": "LogisticRegression (Balanced)",
+      "algorithm": "LogisticRegression",
+      "created_at": "2026-10-27T15:48:04.523756+00:00",
+      "training_samples": 55290,
+      "test_samples": 13823,
+      "feature_extractor": "TfidfVectorizer",
+      "max_features": 15000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "class_distribution": {
+        "positive": 60753,
+        "negative": 5243,
+        "neutral": 3117
+      },
+      "metrics": {
+        "accuracy": 0.8565,
+        "f1_macro": 0.6095,
+        "f1_weighted": 0.8786,
+        "per_class": {
+          "negative": {
+            "precision": 0.5257,
+            "recall": 0.7112,
+            "f1_score": 0.6045,
+            "support": 1049
+          },
+          "neutral": {
+            "precision": 0.2114,
+            "recall": 0.4703,
+            "f1_score": 0.2917,
+            "support": 623
+          },
+          "positive": {
+            "precision": 0.9803,
+            "recall": 0.8889,
+            "f1_score": 0.9324,
+            "support": 12151
+          }
+        }
+      },
+      "all_candidate_metrics": {
+        "MultinomialNB (Baseline)": {
+          "accuracy": 0.9082,
+          "f1_macro": 0.5501,
+          "f1_weighted": 0.8904
+        },
+        "ComplementNB (Imbalanced-optimized)": {
+          "accuracy": 0.8399,
+          "f1_macro": 0.5406,
+          "f1_weighted": 0.8578
+        },
+        "LogisticRegression (Balanced)": {
+          "accuracy": 0.8565,
+          "f1_macro": 0.6095,
+          "f1_weighted": 0.8786
+        },
+        "LinearSVC (Balanced, Calibrated)": {
+          "accuracy": 0.9117,
+          "f1_macro": 0.5558,
+          "f1_weighted": 0.8928
+        }
+      },
+      "artifact_path": "models/best_sentiment_model.joblib"
+    },
+    {
+      "model_id": "sentiment_pipeline_20261028_122329",
+      "model_name": "LinearSVC (Balanced, Calibrated)",
+      "algorithm": "CalibratedClassifierCV",
+      "created_at": "2026-10-28T12:23:30.886166+00:00",
+      "training_samples": 55290,
+      "test_samples": 13823,
+      "feature_extractor": "TfidfVectorizer",
+      "max_features": 15000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "class_distribution": {
+        "positive": 56270,
+        "negative": 7375,
+        "neutral": 5468
+      },
+      "metrics": {
+        "accuracy": 0.9322,
+        "f1_macro": 0.7976,
+        "f1_weighted": 0.928,
+        "per_class": {
+          "negative": {
+            "precision": 0.8047,
+            "recall": 0.7932,
+            "f1_score": 0.7989,
+            "support": 1475
+          },
+          "neutral": {
+            "precision": 0.7436,
+            "recall": 0.5302,
+            "f1_score": 0.619,
+            "support": 1094
+          },
+          "positive": {
+            "precision": 0.9609,
+            "recall": 0.9895,
+            "f1_score": 0.975,
+            "support": 11254
+          }
+        }
+      },
+      "all_candidate_metrics": {
+        "MultinomialNB (Baseline)": {
+          "accuracy": 0.8984,
+          "f1_macro": 0.6986,
+          "f1_weighted": 0.8872
+        },
+        "ComplementNB (Imbalanced-optimized)": {
+          "accuracy": 0.856,
+          "f1_macro": 0.6697,
+          "f1_weighted": 0.8648
+        },
+        "LogisticRegression (Balanced)": {
+          "accuracy": 0.8963,
+          "f1_macro": 0.7654,
+          "f1_weighted": 0.9049
+        },
+        "LinearSVC (Balanced, Calibrated)": {
+          "accuracy": 0.9322,
+          "f1_macro": 0.7976,
+          "f1_weighted": 0.928
+        }
+      },
+      "artifact_path": "models/best_sentiment_model.joblib"
+    },
+    {
+      "model_id": "sentiment_pipeline_20261114_133744",
+      "model_name": "LinearSVC (Balanced, Calibrated)",
+      "algorithm": "CalibratedClassifierCV",
+      "created_at": "2026-11-14T13:37:45.893838+00:00",
+      "training_samples": 50472,
+      "test_samples": 12618,
+      "feature_extractor": "TfidfVectorizer",
+      "max_features": 15000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "class_distribution": {
+        "positive": 50535,
+        "negative": 7260,
+        "neutral": 5295
+      },
+      "metrics": {
+        "accuracy": 0.9233,
+        "f1_macro": 0.7845,
+        "f1_weighted": 0.9182,
+        "per_class": {
+          "negative": {
+            "precision": 0.7959,
+            "recall": 0.7762,
+            "f1_score": 0.7859,
+            "support": 1452
+          },
+          "neutral": {
+            "precision": 0.7305,
+            "recall": 0.5042,
+            "f1_score": 0.5966,
+            "support": 1059
+          },
+          "positive": {
+            "precision": 0.954,
+            "recall": 0.9883,
+            "f1_score": 0.9708,
+            "support": 10107
+          }
+        }
+      },
+      "all_candidate_metrics": {
+        "MultinomialNB (Baseline)": {
+          "accuracy": 0.894,
+          "f1_macro": 0.6913,
+          "f1_weighted": 0.8803
+        },
+        "ComplementNB (Imbalanced-optimized)": {
+          "accuracy": 0.86,
+          "f1_macro": 0.6776,
+          "f1_weighted": 0.8657
+        },
+        "LogisticRegression (Balanced)": {
+          "accuracy": 0.8986,
+          "f1_macro": 0.7746,
+          "f1_weighted": 0.9061
+        },
+        "LinearSVC (Balanced, Calibrated)": {
+          "accuracy": 0.9233,
+          "f1_macro": 0.7845,
+          "f1_weighted": 0.9182
+        }
+      },
+      "artifact_path": "models/best_sentiment_model.joblib"
+    }
+  ]
+}

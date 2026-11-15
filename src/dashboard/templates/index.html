@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentiment Intelligence — Tiki & Lazada BI Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="/static/js/tailwind.config.js"></script>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body class="h-screen overflow-hidden flex selection:bg-rose-100 selection:text-rose-900 bg-[#fdf8f9]">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="w-72 bg-white border-r border-rose-100/80 flex flex-col justify-between shrink-0 h-screen sticky top-0 shadow-sm z-20 overflow-y-auto">
+    <div class="p-6">
+      <!-- App Brand Logo -->
+      <div class="flex items-center gap-3.5 mb-8">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-400 flex items-center justify-center shadow-lg shadow-rose-500/25 text-white font-bold text-xl tracking-tight">
+          SI
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-slate-800 tracking-tight leading-snug">
+            Sentiment Insight
+          </h1>
+          <p class="text-xs text-rose-500/90 font-semibold tracking-wide">
+            E-Commerce Intelligence
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Stacked on the Left) -->
+      <div class="space-y-1.5">
+        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2.5">Menu phân tích</p>
+        
+        <button onclick="switchTab('overview')" id="tab-btn-overview" class="sidebar-btn active w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-left">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+          <span>Tổng quan & Xu hướng</span>
+        </button>
+
+        <button onclick="switchTab('pricetier')" id="tab-btn-pricetier" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-slate-600 text-left">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+          <span>Phân khúc giá & Ngành hàng</span>
+        </button>
+
+        <button onclick="switchTab('customer')" id="tab-btn-customer" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-slate-600 text-left">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <span>Phát hiện mâu thuẫn đánh giá</span>
+        </button>
+
+        <button onclick="switchTab('products')" id="tab-btn-products" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-slate-600 text-left">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+          <span>Chi tiết sản phẩm</span>
+        </button>
+
+        <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-slate-600 text-left">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span>Thử nghiệm AI & Trợ lý</span>
+        </button>
+      </div>
+
+      <!-- Quick Platform Filter Dropdown inside Sidebar -->
+      <div class="mt-8 pt-6 border-t border-rose-100">
+        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2.5">Chọn nền tảng</p>
+        <div class="px-1">
+          <div class="relative flex items-center bg-rose-50/60 border border-rose-200 hover:border-rose-300 rounded-xl px-3.5 py-2.5 transition">
+            <select id="filter-platform" onchange="selectPlatform(this.value)" class="w-full bg-transparent text-xs font-semibold text-rose-600 focus:outline-none cursor-pointer appearance-none pr-6">
+              <option value="all" class="bg-white text-slate-700 font-semibold">Tất cả sàn (Tiki & Lazada)</option>
+              <option value="tiki" class="bg-white text-slate-700 font-semibold">Tiki</option>
+              <option value="lazada" class="bg-white text-slate-700 font-semibold">Lazada</option>
+            </select>
+            <svg class="w-4 h-4 text-rose-500 pointer-events-none absolute right-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-6 border-t border-rose-100/70 bg-gradient-to-b from-white to-rose-50/40">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">
+          AI
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-800 truncate">Hệ thống phân tích</p>
+          <div class="flex items-center gap-1.5 text-[11px] text-emerald-600 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="sidebar-status-text">Đang hoạt động</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div id="main-viewport" class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+
+    <!-- TOP HEADER / FILTER BAR -->
+    <header class="sticky top-0 z-10 bg-white/85 backdrop-blur-md border-b border-rose-100/80 px-8 py-4">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 id="view-title" class="text-lg font-extrabold text-slate-800 tracking-tight">Tổng quan & Xu hướng</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Theo dõi chất lượng phản hồi từ người mua hàng trực tuyến</p>
+        </div>
+
+        <!-- Clean, Simplified Filters -->
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 text-xs">
+            <span class="text-slate-400 font-medium">Ngành hàng:</span>
+            <select id="filter-category" onchange="applyFilters()" class="bg-transparent font-semibold text-slate-700 focus:outline-none cursor-pointer">
+              <option value="ALL">Tất cả ngành hàng</option>
+              <option value="Sách & Văn Phòng Phẩm">Sách & Văn Phòng Phẩm</option>
+              <option value="Làm Đẹp - Sức Khỏe">Làm Đẹp - Sức Khỏe</option>
+              <option value="Nhà Cửa - Đời Sống">Nhà Cửa - Đời Sống</option>
+              <option value="Điện & Đồ Gia Dụng">Điện & Đồ Gia Dụng</option>
+              <option value="Bách Hóa Online">Bách Hóa Online</option>
+              <option value="Đồ Chơi - Mẹ & Bé">Đồ Chơi - Mẹ & Bé</option>
+              <option value="Điện Thoại - Máy Tính Bảng">Điện Thoại - MTB</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 text-xs">
+            <span class="text-slate-400 font-medium">Phân khúc:</span>
+            <select id="filter-tier" onchange="applyFilters()" class="bg-transparent font-semibold text-slate-700 focus:outline-none cursor-pointer">
+              <option value="ALL">Tất cả mức giá</option>
+              <option value="Bình dân (< 200k)">Bình dân (&lt; 200k)</option>
+              <option value="Tầm trung (200k - 1.5M)">Tầm trung (200k - 1.5M)</option>
+              <option value="Cao cấp (> 1.5M)">Cao cấp (&gt; 1.5M)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 text-xs">
+            <span class="text-slate-400 font-medium">Thời gian:</span>
+            <select id="filter-year" onchange="applyFilters()" class="bg-transparent font-semibold text-slate-700 focus:outline-none cursor-pointer">
+              <option value="2024">Năm gần nhất (2024 - 2026)</option>
+              <option value="2022" selected>3 năm gần đây (2022 - 2026)</option>
+              <option value="2020">Toàn bộ dữ liệu</option>
+            </select>
+          </div>
+
+          <button onclick="resetFilters()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition">
+            Đặt lại
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 p-8 space-y-7 max-w-[1600px] w-full mx-auto">
+
+      <!-- SIMPLIFIED KPI METRIC CARDS -->
+      <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        
+        <div class="soft-card p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400">Tổng đánh giá</span>
+            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+          </div>
+          <div class="mt-2">
+            <div id="kpi-total" class="text-2xl font-bold font-mono text-slate-800 tracking-tight">45,820</div>
+            <div id="kpi-total-sub" class="text-[11px] text-slate-400 mt-1 font-medium">Được thu thập từ Tiki & Lazada</div>
+          </div>
+        </div>
+
+        <div class="soft-card p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400">Điểm sao trung bình</span>
+            <span class="text-amber-400 text-xs">★</span>
+          </div>
+          <div class="mt-2">
+            <div class="flex items-baseline gap-1">
+              <span id="kpi-rating" class="text-2xl font-bold font-mono text-amber-500">4.62</span>
+              <span class="text-xs text-slate-400 font-semibold">/ 5.0</span>
+            </div>
+            <div id="kpi-rating-sub" class="text-[11px] text-slate-400 mt-1 font-medium">Trên 654 sản phẩm</div>
+          </div>
+        </div>
+
+        <div class="soft-card p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-emerald-600">Đánh giá Tích cực</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          </div>
+          <div class="mt-2">
+            <div id="kpi-pos" class="text-2xl font-bold font-mono text-emerald-600">82.4%</div>
+            <div id="kpi-pos-sub" class="text-[11px] text-emerald-600/80 mt-1 font-medium">Hài lòng với trải nghiệm</div>
+          </div>
+        </div>
+
+        <div class="soft-card p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-amber-600">Đánh giá Trung lập</span>
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          </div>
+          <div class="mt-2">
+            <div id="kpi-neu" class="text-2xl font-bold font-mono text-amber-500">9.8%</div>
+            <div id="kpi-neu-sub" class="text-[11px] text-slate-400 mt-1 font-medium">Cần cải thiện thêm</div>
+          </div>
+        </div>
+
+        <div class="soft-card p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-rose-600">Đánh giá Tiêu cực</span>
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+          </div>
+          <div class="mt-2">
+            <div id="kpi-neg" class="text-2xl font-bold font-mono text-rose-500">7.8%</div>
+            <div id="kpi-neg-sub" class="text-[11px] text-rose-500/80 mt-1 font-medium">Phản hồi không hài lòng</div>
+          </div>
+        </div>
+
+        <div class="soft-card p-4 flex flex-col justify-between border-rose-200 bg-rose-50/30">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-rose-700">Mâu thuẫn Sao & Bình luận</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700">Cảnh báo</span>
+          </div>
+          <div class="mt-2">
+            <div id="kpi-conflict" class="text-2xl font-bold font-mono text-rose-600">1,248</div>
+            <div id="kpi-conflict-sub" class="text-[11px] text-rose-600 mt-1 font-medium">Chấm 4-5★ nhưng viết chê</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 1: OVERVIEW & TREND -->
+      <div id="view-overview" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Big Trend Line/Bar Chart -->
+          <div class="soft-card p-6 lg:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-slate-800">Biến động cảm xúc và số lượng đánh giá theo tháng</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Biểu đồ đối chiếu số lượng bình luận và tỷ lệ phản hồi tiêu cực</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+                  <span class="w-3 h-3 rounded bg-rose-200 inline-block"></span> Số đánh giá
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-rose-500 font-semibold ml-2">
+                  <span class="w-3 h-1 rounded bg-rose-500 inline-block"></span> % Tiêu cực
+                </span>
+              </div>
+            </div>
+            <div id="chart-timeseries" class="w-full h-[360px]"></div>
+          </div>
+
+          <!-- Sentiment Proportion Donut -->
+          <div class="soft-card p-6 flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Tỷ lệ phân bổ cảm xúc</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Dựa trên nội dung nhận xét chi tiết</p>
+              <div id="chart-donut" class="w-full h-[240px] mt-2"></div>
+            </div>
+            <div class="pt-4 border-t border-rose-100/80 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-500 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Tích cực
+                </span>
+                <span id="donut-pos-text" class="font-bold text-slate-700">82.4% (37,755)</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-500 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Trung lập
+                </span>
+                <span id="donut-neu-text" class="font-bold text-slate-700">9.8% (4,490)</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-500 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> Tiêu cực
+                </span>
+                <span id="donut-neg-text" class="font-bold text-slate-700">7.8% (3,575)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2 Side-by-side Insights -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Mức độ hài lòng theo từng phân khúc giá</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">So sánh tỷ lệ tiêu cực giữa các dòng sản phẩm</p>
+            <div id="chart-tier" class="w-full h-[300px]"></div>
+          </div>
+
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Cảm xúc đánh giá qua các ngành hàng chính</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Tỷ lệ hài lòng và tỷ lệ cần lưu ý theo ngành</p>
+            <div id="chart-category" class="w-full h-[300px]"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: PRICE TIER & CATEGORY -->
+      <div id="view-pricetier" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">So sánh chi tiết 3 phân khúc giá</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-4">Sản phẩm giá cao thường đi kèm kỳ vọng khắt khe hơn từ người mua</p>
+            <div id="chart-tier-detail" class="w-full h-[320px]"></div>
+          </div>
+
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Bản đồ nhiệt tỷ lệ không hài lòng</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-4">Top 3 danh mục nhiều sản phẩm & bình luận nhất theo phân khúc giá</p>
+            <div id="chart-heatmap" class="w-full h-[320px]"></div>
+          </div>
+        </div>
+
+        <div class="soft-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-bold text-slate-800">Thống kê tổng hợp theo ngành hàng</h3>
+            <span class="text-xs text-slate-400 font-medium">Dữ liệu liên sàn Tiki & Lazada</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-rose-100 text-slate-400 uppercase text-[11px] font-bold">
+                  <th class="py-3 px-4">Ngành Hàng</th>
+                  <th class="py-3 px-4 text-right">Số Sản Phẩm</th>
+                  <th class="py-3 px-4 text-right">Lượng Đánh Giá</th>
+                  <th class="py-3 px-4 text-right">Điểm Sao TB</th>
+                  <th class="py-3 px-4 text-right text-emerald-600">% Hài Lòng</th>
+                  <th class="py-3 px-4 text-right text-rose-500">% Phàn Nàn</th>
+                  <th class="py-3 px-4 text-right text-rose-600">Đánh giá lệch sao</th>
+                </tr>
+              </thead>
+              <tbody id="table-category-body" class="divide-y divide-rose-50 text-slate-700">
+                <tr class="hover:bg-rose-50/40">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Sách & Văn Phòng Phẩm</td>
+                  <td class="py-3 px-4 text-right">180</td>
+                  <td class="py-3 px-4 text-right font-mono">14,210</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.78 ★</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">89.2%</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-rose-500">4.3%</td>
+                  <td class="py-3 px-4 text-right font-mono text-rose-600">214 ca</td>
+                </tr>
+                <tr class="hover:bg-rose-50/40">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Làm Đẹp - Sức Khỏe</td>
+                  <td class="py-3 px-4 text-right">145</td>
+                  <td class="py-3 px-4 text-right font-mono">11,040</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.65 ★</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">84.1%</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-rose-500">6.8%</td>
+                  <td class="py-3 px-4 text-right font-mono text-rose-600">260 ca</td>
+                </tr>
+                <tr class="hover:bg-rose-50/40">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Điện Thoại - Máy Tính Bảng</td>
+                  <td class="py-3 px-4 text-right">72</td>
+                  <td class="py-3 px-4 text-right font-mono">6,420</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.42 ★</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">76.5%</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-rose-500">12.1%</td>
+                  <td class="py-3 px-4 text-right font-mono text-rose-600">312 ca</td>
+                </tr>
+                <tr class="hover:bg-rose-50/40">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Điện & Đồ Gia Dụng</td>
+                  <td class="py-3 px-4 text-right">98</td>
+                  <td class="py-3 px-4 text-right font-mono">7,150</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.51 ★</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">79.8%</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-rose-500">9.4%</td>
+                  <td class="py-3 px-4 text-right font-mono text-rose-600">198 ca</td>
+                </tr>
+                <tr class="hover:bg-rose-50/40">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Nhà Cửa - Đời Sống</td>
+                  <td class="py-3 px-4 text-right">86</td>
+                  <td class="py-3 px-4 text-right font-mono">4,200</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.61 ★</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">83.5%</td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-rose-500">7.2%</td>
+                  <td class="py-3 px-4 text-right font-mono text-rose-600">114 ca</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: CONFLICT DISCOVERY -->
+      <div id="view-customer" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Khách gửi kèm ảnh thực tế</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Đánh giá có ảnh thường kèm lời chê chi tiết hơn</p>
+            <div id="chart-customer-photo" class="w-full h-[260px]"></div>
+          </div>
+
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Khách mua nhiều lần</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Mức độ trung thành so với khách mua lần đầu</p>
+            <div id="chart-customer-freq" class="w-full h-[260px]"></div>
+          </div>
+
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Top gian hàng có nhiều phản hồi</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Độ uy tín của các shop lớn nhất sàn</p>
+            <div id="chart-customer-seller" class="w-full h-[260px]"></div>
+          </div>
+        </div>
+
+        <!-- Table of Real Discrepant Reviews -->
+        <div class="soft-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Trường hợp chấm 4–5 sao nhưng bình luận phàn nàn thực tế</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Giúp nhà bán hàng phát hiện khách hàng thất vọng ngầm mà điểm sao chưa thể hiện</p>
+            </div>
+            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-rose-100 text-rose-700">
+              Đã tự động nhận diện bằng AI
+            </span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-rose-100 text-slate-400 uppercase text-[11px] font-bold">
+                  <th class="py-3 px-4">Tên Sản Phẩm</th>
+                  <th class="py-3 px-4 text-center">Sao Khách Chấm</th>
+                  <th class="py-3 px-4 text-center">Cảm Xúc Thực Tế</th>
+                  <th class="py-3 px-4">Nội Dung Người Mua Viết</th>
+                </tr>
+              </thead>
+              <tbody id="table-conflicts-body" class="divide-y divide-rose-50 text-slate-700">
+                <tr class="hover:bg-rose-50/30">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Sách - Tuổi Trẻ Đáng Giá Bao Nhiêu</td>
+                  <td class="py-3 px-4 text-center font-bold text-amber-500 tracking-wider">★★★★★</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-700">Thất vọng / Tiêu cực</span></td>
+                  <td class="py-3 px-4 text-slate-600 font-medium">"Giao hàng nhanh nhưng sách bị rách gáy và móp méo góc, đóng gói quá ẩu!"</td>
+                </tr>
+                <tr class="hover:bg-rose-50/30">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Nồi chiên không dầu Lock&Lock 5.2L</td>
+                  <td class="py-3 px-4 text-center font-bold text-amber-500 tracking-wider">★★★★☆</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-700">Thất vọng / Tiêu cực</span></td>
+                  <td class="py-3 px-4 text-slate-600 font-medium">"Dùng được 1 tuần thì có mùi khét, gọi hotline bảo hành mãi không ai nghe máy."</td>
+                </tr>
+                <tr class="hover:bg-rose-50/30">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Tai nghe Bluetooth chống ồn Sony</td>
+                  <td class="py-3 px-4 text-center font-bold text-amber-500 tracking-wider">★★★★★</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-700">Thất vọng / Tiêu cực</span></td>
+                  <td class="py-3 px-4 text-slate-600 font-medium">"Cho 5 sao để hiện lên đầu. Pin ảo sạc đầy chỉ nghe được 15 phút là sập nguồn."</td>
+                </tr>
+                <tr class="hover:bg-rose-50/30">
+                  <td class="py-3 px-4 font-semibold text-slate-800">Kem chống nắng La Roche-Posay Anthelios</td>
+                  <td class="py-3 px-4 text-center font-bold text-amber-500 tracking-wider">★★★★☆</td>
+                  <td class="py-3 px-4 text-center"><span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-700">Thất vọng / Tiêu cực</span></td>
+                  <td class="py-3 px-4 text-slate-600 font-medium">"Chất kem vón cục nặng mặt, bôi lên bị nổi mụn ẩn nhiều, không giống tuýp cũ mua ở mall."</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PRODUCTS DRILL-DOWN -->
+      <div id="view-products" class="hidden space-y-6">
+        <div class="soft-card p-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="relative">
+              <input
+                id="prod-search"
+                type="text"
+                placeholder="Tìm tên sản phẩm..."
+                oninput="loadProductsTable()"
+                class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-rose-400 w-72"
+              />
+            </div>
+
+            <select id="prod-sort" onchange="loadProductsTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none">
+              <option value="total_reviews">Sắp xếp: Nhiều đánh giá nhất</option>
+              <option value="text_negative_pct">Sắp xếp: Tỷ lệ phàn nàn cao nhất</option>
+              <option value="conflict_pct">Sắp xếp: Đánh giá mâu thuẫn nhiều nhất</option>
+              <option value="avg_rating">Sắp xếp: Điểm sao từ thấp đến cao</option>
+            </select>
+
+            <label class="flex items-center gap-2 text-xs text-rose-700 font-medium cursor-pointer bg-rose-50 border border-rose-200 px-3.5 py-2 rounded-xl">
+              <input id="prod-anomaly" type="checkbox" onchange="loadProductsTable()" class="rounded text-rose-500 focus:ring-0" />
+              <span>Chỉ hiện sản phẩm có cảnh báo</span>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div id="prod-count-badge" class="text-xs font-semibold text-slate-400">Hiển thị 654 sản phẩm</div>
+            <button
+              onclick="exportProductsCsv()"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200/80 transition"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <span>Xuất CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="soft-card p-6 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-rose-100 text-slate-400 uppercase text-[11px] font-bold">
+                <th class="py-3 px-4">Sàn</th>
+                <th class="py-3 px-4">Tên Sản Phẩm</th>
+                <th class="py-3 px-4">Ngành Hàng</th>
+                <th class="py-3 px-4 text-right">Lượng Đánh Giá</th>
+                <th class="py-3 px-4 text-right">Điểm Sao</th>
+                <th class="py-3 px-4 text-right text-emerald-600">% Hài Lòng</th>
+                <th class="py-3 px-4 text-right text-rose-500">% Phàn Nàn</th>
+                <th class="py-3 px-4 text-center">Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody id="table-products-body" class="divide-y divide-rose-50 text-slate-700 font-medium">
+              <tr class="hover:bg-rose-50/30">
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-700">Tiki</span></td>
+                <td class="py-3 px-4 font-semibold text-slate-800">Cây Cam Ngọt Của Tôi (Tái Bản)</td>
+                <td class="py-3 px-4 text-slate-500">Sách & Văn Phòng Phẩm</td>
+                <td class="py-3 px-4 text-right font-mono">1,820</td>
+                <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.9 ★</td>
+                <td class="py-3 px-4 text-right font-mono text-emerald-600 font-bold">96.2%</td>
+                <td class="py-3 px-4 text-right font-mono text-rose-500 font-bold">1.8%</td>
+                <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Tốt</span></td>
+              </tr>
+              <tr class="hover:bg-rose-50/30">
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-pink-100 text-pink-700">Lazada</span></td>
+                <td class="py-3 px-4 font-semibold text-slate-800">Tai Nghe Không Dây Bluetooth 5.3 Pro TWS</td>
+                <td class="py-3 px-4 text-slate-500">Điện Thoại - MTB</td>
+                <td class="py-3 px-4 text-right font-mono">940</td>
+                <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">3.8 ★</td>
+                <td class="py-3 px-4 text-right font-mono text-emerald-600 font-bold">62.0%</td>
+                <td class="py-3 px-4 text-right font-mono text-rose-500 font-bold">24.5%</td>
+                <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-700">Cảnh báo</span></td>
+              </tr>
+              <tr class="hover:bg-rose-50/30">
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-700">Tiki</span></td>
+                <td class="py-3 px-4 font-semibold text-slate-800">Sữa Rửa Mặt Dịu Nhẹ Cetaphil Gentle Cleanser 500ml</td>
+                <td class="py-3 px-4 text-slate-500">Làm Đẹp - Sức Khỏe</td>
+                <td class="py-3 px-4 text-right font-mono">2,150</td>
+                <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.8 ★</td>
+                <td class="py-3 px-4 text-right font-mono text-emerald-600 font-bold">92.4%</td>
+                <td class="py-3 px-4 text-right font-mono text-rose-500 font-bold">3.5%</td>
+                <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Tốt</span></td>
+              </tr>
+              <tr class="hover:bg-rose-50/30">
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-700">Tiki</span></td>
+                <td class="py-3 px-4 font-semibold text-slate-800">Nồi Chiên Không Dầu Điện Tử Philips 4.1L</td>
+                <td class="py-3 px-4 text-slate-500">Điện & Gia Dụng</td>
+                <td class="py-3 px-4 text-right font-mono">1,020</td>
+                <td class="py-3 px-4 text-right font-mono font-bold text-amber-500">4.7 ★</td>
+                <td class="py-3 px-4 text-right font-mono text-emerald-600 font-bold">88.5%</td>
+                <td class="py-3 px-4 text-right font-mono text-rose-500 font-bold">5.8%</td>
+                <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Tốt</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 5: AI SANDBOX -->
+      <div id="view-sandbox" class="hidden space-y-6">
+        <div class="soft-card p-6 border-rose-200">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div>
+              <h3 class="text-base font-bold text-slate-800">Thử nghiệm nhận diện cảm xúc trực tiếp</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Nhập bình luận bất kỳ để hệ thống tự động phát hiện tâm trạng và mâu thuẫn đánh giá</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="fillSandbox('Giao hàng nhanh nhưng sách bị rách bìa và móp góc, rất thất vọng!', 5)" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 transition">
+                Mẫu: 5★ nhưng chê hàng rách
+              </button>
+              <button onclick="fillSandbox('Sản phẩm tạm ổn so với tầm giá, để dùng thêm một thời gian xem độ bền.', 3)" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 transition">
+                Mẫu: 3★ trung lập
+              </button>
+              <button onclick="fillSandbox('Chất lượng tuyệt vời, dùng êm ái, đóng gói cẩn thận rất đáng tiền!', 5)" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition">
+                Mẫu: 5★ khen tốt
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="lg:col-span-7 space-y-4">
+              <textarea
+                id="sandbox-input"
+                rows="3"
+                class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:bg-white"
+                placeholder="Nhập nội dung phản hồi của khách hàng tại đây..."
+              >Giao hàng nhanh nhưng sách bị rách bìa và móp góc, rất thất vọng!</textarea>
+
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 font-medium">Số sao khách chọn:</span>
+                  <select id="sandbox-stars" class="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-amber-500 tracking-wider focus:outline-none">
+                    <option value="5" selected>★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                  </select>
+                </div>
+
+                <button
+                  onclick="analyzeSentiment()"
+                  class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-xs font-bold text-white shadow-md shadow-rose-500/20 transition"
+                >
+                  Phân tích ngay
+                </button>
+              </div>
+            </div>
+
+            <!-- Analysis Result Panel -->
+            <div class="lg:col-span-5 bg-rose-50/40 border border-rose-100 rounded-2xl p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-600">Kết quả nhận diện:</span>
+                <span id="result-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500 text-white shadow-sm">
+                  TIÊU CỰC
+                </span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="p-2.5 rounded-xl bg-white border border-slate-100">
+                  <div class="text-[10px] font-bold text-slate-400">TÍCH CỰC</div>
+                  <div id="prob-pos" class="font-bold text-emerald-600 text-sm mt-0.5">2.5%</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-slate-100">
+                  <div class="text-[10px] font-bold text-slate-400">TRUNG LẬP</div>
+                  <div id="prob-neu" class="font-bold text-amber-500 text-sm mt-0.5">8.1%</div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-slate-100">
+                  <div class="text-[10px] font-bold text-slate-400">TIÊU CỰC</div>
+                  <div id="prob-neg" class="font-bold text-rose-500 text-sm mt-0.5">89.4%</div>
+                </div>
+              </div>
+
+              <div id="result-note" class="text-xs text-rose-800 bg-rose-100/60 p-3 rounded-xl font-medium border border-rose-200/60">
+                Phát hiện mâu thuẫn: Khách chấm <b>5 sao</b> nhưng nội dung lại phàn nàn và không hài lòng. Cần ưu tiên chăm sóc khách hàng!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Độ chính xác phân tích cảm xúc</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Hiệu năng nhận diện đạt trên 92% độ tin cậy</p>
+            <div id="chart-models" class="w-full h-[280px]"></div>
+          </div>
+
+          <div class="soft-card p-6">
+            <h3 class="text-sm font-bold text-slate-800">Ma trận đối chiếu nhầm lẫn</h3>
+            <p class="text-xs text-slate-400 mt-0.5 mb-3">Độ chính xác theo từng loại cảm xúc (Tích cực - Trung lập - Tiêu cực)</p>
+            <div id="chart-cm" class="w-full h-[310px]"></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PRODUCT DRILL-DOWN MODAL (LIGHT SOFT-CARD STYLE) -->
+  <div id="drilldown-modal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="soft-card max-w-4xl w-full max-h-[85vh] flex flex-col border border-rose-100 bg-white">
+      <div class="p-5 border-b border-rose-100 flex items-center justify-between">
+        <div>
+          <h3 id="modal-prod-title" class="text-sm font-bold text-slate-800">Chi tiết đánh giá sản phẩm</h3>
+          <p id="modal-prod-sub" class="text-xs text-slate-400 mt-0.5"></p>
+        </div>
+        <button onclick="closeDrilldownModal()" class="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-xs font-semibold text-rose-600 transition">
+          Đóng ✕
+        </button>
+      </div>
+      <div id="modal-reviews-list" class="p-5 overflow-y-auto space-y-3 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- EXTERNAL JAVASCRIPT -->
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
