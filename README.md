@@ -323,4 +323,4 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 - **Author**: Nguyen Tien Dat (Tienndat2306)
 - **Email**: [dattrithuc123@gmail.com](mailto:dattrithuc123@gmail.com)
 - **GitHub**: [@Tienndat2306](https://github.com/Tienndat2306)
-- **LinkedIn**: [Nguyen Tien Dat](https://www.linkedin.com/in/nguyen-tien-dat)
+- **LinkedIn**: [Nguyen Tien Dat](https://www.linkedin.com/in/ngtiendat2306/)
